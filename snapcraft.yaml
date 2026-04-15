@@ -13,7 +13,7 @@ parts:
   aws-azure-login:
     plugin: nodejs
     nodejs-version: "14.15.4"
-    nodejs-package-manager: yarn
+    nodejs-package-manager: npm
     source: .
 
 apps:

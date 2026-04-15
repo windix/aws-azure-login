@@ -26,7 +26,7 @@
     "eslint": "eslint . --ext .ts",
     "prettier:write": "prettier --write \"src/**/*.{ts,json}\"",
     "prettier:check": "prettier --check \"src/**/*.ts\"",
-    "test": "yarn eslint && yarn prettier:check"
+    "test": "npm run eslint && npm run prettier:check"
   },
   "dependencies": {
     "@aws-sdk/client-sts": "^3.473.0",
@@ -40,7 +40,7 @@
     "lodash": "^4.17.21",
     "mkdirp": "^1.0.4",
     "proxy-agent": "^6.4.0",
-    "puppeteer": "^13.7.0",
+    "puppeteer": "^24.40.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
@@ -53,8 +53,8 @@
     "@types/mkdirp": "^1.0.2",
     "@types/node": "^20.11.30",
     "@types/uuid": "^8.3.4",
-    "@typescript-eslint/eslint-plugin": "^6.21.0",
-    "@typescript-eslint/parser": "^6.21.0",
+    "@typescript-eslint/eslint-plugin": "^8.58.2",
+    "@typescript-eslint/parser": "^8.58.2",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^8.10.0",
     "prettier": "^2.8.8",
