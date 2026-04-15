@@ -6,14 +6,14 @@ description: |
   $ aws-azure-login --configure
   Once aws-azure-login is configured, you can log in. For the default profile, just run:-
   $ aws-azure-login
-base: core18
+base: core24
 confinement: strict
 
 parts:
   aws-azure-login:
     plugin: nodejs
-    nodejs-version: "14.15.4"
-    nodejs-package-manager: yarn
+    nodejs-version: "24.11.1"
+    nodejs-package-manager: npm
     source: .
 
 apps:

@@ -2,53 +2,47 @@
 
 ## Get started
 
-This project is written in TypeScript and is using prettier and eslint for code formatting. You need node v18.
+This project is written in TypeScript and is using prettier and eslint for code formatting. You need node v24.
 
-1. Install node v18. I recommend installing that with nvm: https://github.com/nvm-sh/nvm
-
-```sh
-nvm install 18
-```
-
-2. Make node v18 default
+1. Install node v24. I recommend installing that with nvm: https://github.com/nvm-sh/nvm
 
 ```sh
-nvm alias default 18
+nvm install 24
 ```
 
-3. Open a new terminal and verify node version (should return v18.X.X)
+2. Make node v24 default
+
+```sh
+nvm alias default 24
+```
+
+3. Open a new terminal and verify node version (should return v24.X.X)
 
 ```sh
 node -v
 ```
 
-4. Install yarn
-
-```sh
-npm install -g yarn
-```
-
-5. Fork and clone project
+4. Fork and clone project
 
 ```sh
 git clone git@github.com:<GITHUB_USERNAME>/aws-azure-login.git
 cd aws-azure-login
 ```
 
-6. Install dependencies
+5. Install dependencies
 
 ```sh
-yarn install
+npm install
 ```
 
-7a. Start dev mode
+6a. Start dev mode
 
 ```sh
-yarn start
+npm start
 ```
 
-7b. Start prod mode
+6b. Start prod mode
 
 ```sh
-yarn build && node ./lib/index.js
+npm run build && node ./lib/index.js
 ```
