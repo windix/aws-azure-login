@@ -164,6 +164,51 @@ _Note:_ on Linux you will likely need to disable the Puppeteer sandbox or Chrome
 
 If behind corporate proxy, then just set https_proxy env variable.
 
+## Integration with aws-vault
+
+[aws-vault](https://github.com/99designs/aws-vault) is a tool to securely store and access AWS credentials. You can use aws-azure-login as a [`credential_process`](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sourcing-credentials.html) provider so that aws-vault fetches and stores the temporary credentials automatically.
+
+### Setup
+
+1. Install [aws-vault](https://github.com/99designs/aws-vault#installing).
+
+2. Configure your profile in `~/.aws/config` to use aws-azure-login as a credential process:
+
+    ```ini
+    [profile my-profile]
+    azure_tenant_id = xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+    azure_app_id_uri = https://signin.aws.amazon.com/saml
+    azure_default_username = me@example.com
+    azure_default_role_arn = arn:aws:iam::123456789012:role/MyRole
+    azure_default_duration_hours = 8
+    azure_default_remember_me = true
+    credential_process = aws-azure-login --profile my-profile --no-prompt --json
+    ```
+
+3. Run commands via aws-vault:
+
+    ```
+    aws-vault exec my-profile -- aws s3 ls
+    ```
+
+### How it works
+
+When `--json` is specified, aws-azure-login prints the credentials to stdout in the format expected by the `credential_process` protocol instead of writing them to `~/.aws/credentials`:
+
+```json
+{
+  "Version": 1,
+  "AccessKeyId": "ASIA...",
+  "SecretAccessKey": "wJalr...",
+  "SessionToken": "...",
+  "Expiration": "2026-04-15T08:00:00.000Z"
+}
+```
+
+All other output (status messages, prompts) is redirected to stderr so that stdout remains clean for aws-vault to parse.
+
+> **Tip:** Use `azure_default_remember_me = true` together with `--no-prompt` so that after the first interactive login, subsequent credential refreshes happen silently using the saved session cookies.
+
 ## Automation
 
 ### Renew credentials for all configured profiles
