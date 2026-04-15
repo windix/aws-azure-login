@@ -5,7 +5,12 @@ import zlib from "zlib";
 import { STS, STSClientConfig } from "@aws-sdk/client-sts";
 import { load } from "cheerio";
 import { v4 } from "uuid";
-import puppeteer, { HTTPRequest, Page, Browser, ElementHandle } from "puppeteer";
+import puppeteer, {
+  HTTPRequest,
+  Page,
+  Browser,
+  ElementHandle,
+} from "puppeteer";
 import querystring from "querystring";
 import _debug from "debug";
 import { CLIError } from "./CLIError";
@@ -133,19 +138,19 @@ const states = [
       debug("Multiple accounts associated with username.");
       const aadTile = await page.$("#aadTileTitle");
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const aadTileMessage = (await page.evaluate(
+      const aadTileMessage = await page.evaluate(
         // eslint-disable-next-line
         (a: Element | null) => a?.textContent ?? "",
         aadTile
-      ));
+      );
 
       const msaTile = await page.$("#msaTileTitle");
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const msaTileMessage = (await page.evaluate(
+      const msaTileMessage = await page.evaluate(
         // eslint-disable-next-line
         (m: Element | null) => m?.textContent ?? "",
         msaTile
-      ));
+      );
 
       const accounts = [
         { message: aadTileMessage, selector: "#aadTileTitle" },
@@ -282,15 +287,12 @@ const states = [
   {
     name: "TFA instructions",
     selector: `#idDiv_SAOTCAS_Description`,
-    async handler(
-      page: Page,
-      selected: ElementHandle
-    ): Promise<void> {
-      const descriptionMessage = (await page.evaluate(
+    async handler(page: Page, selected: ElementHandle): Promise<void> {
+      const descriptionMessage = await page.evaluate(
         // eslint-disable-next-line
         (description: Element | null) => description?.textContent ?? "",
         selected
-      ));
+      );
       console.log(descriptionMessage);
 
       try {
@@ -321,16 +323,13 @@ const states = [
   {
     name: "TFA failed",
     selector: `#idDiv_SAASDS_Description,#idDiv_SAASTO_Description`,
-    async handler(
-      page: Page,
-      selected: ElementHandle
-    ): Promise<void> {
+    async handler(page: Page, selected: ElementHandle): Promise<void> {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const descriptionMessage = (await page.evaluate(
+      const descriptionMessage = await page.evaluate(
         // eslint-disable-next-line
         (description: Element | null) => description?.textContent ?? "",
         selected
-      ));
+      );
       throw new CLIError(descriptionMessage);
     },
   },
@@ -423,16 +422,13 @@ const states = [
   {
     name: "Service exception",
     selector: "#service_exception_message",
-    async handler(
-      page: Page,
-      selected: ElementHandle
-    ): Promise<void> {
+    async handler(page: Page, selected: ElementHandle): Promise<void> {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const descriptionMessage = (await page.evaluate(
+      const descriptionMessage = await page.evaluate(
         // eslint-disable-next-line
         (description: Element | null) => description?.textContent ?? "",
         selected
-      ));
+      );
       throw new CLIError(descriptionMessage);
     },
   },
