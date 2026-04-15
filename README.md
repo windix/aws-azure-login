@@ -166,11 +166,11 @@ If behind corporate proxy, then just set https_proxy env variable.
 
 ## Integration with aws-vault
 
-[aws-vault](https://github.com/99designs/aws-vault) is a tool to securely store and access AWS credentials. You can use aws-azure-login as a [`credential_process`](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sourcing-credentials.html) provider so that aws-vault fetches and stores the temporary credentials automatically.
+[aws-vault](https://github.com/ByteNess/aws-vault) is a tool to securely store and access AWS credentials. You can use aws-azure-login as a [`credential_process`](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sourcing-credentials.html) provider so that aws-vault fetches and stores the temporary credentials automatically.
 
 ### Setup
 
-1. Install [aws-vault](https://github.com/99designs/aws-vault#installing).
+1. Install [aws-vault](https://github.com/ByteNess/aws-vault#installing).
 
 2. Configure your profile in `~/.aws/config` to use aws-azure-login as a credential process:
 
