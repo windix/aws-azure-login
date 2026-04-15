@@ -450,7 +450,8 @@ export const login = {
     awsNoVerifySsl: boolean,
     enableChromeSeamlessSso: boolean,
     noDisableExtensions: boolean,
-    disableGpu: boolean
+    disableGpu: boolean,
+    jsonOutput = false
   ): Promise<void> {
     let headless, cliProxy;
     if (mode === "cli") {
@@ -510,7 +511,8 @@ export const login = {
       role,
       durationHours,
       awsNoVerifySsl,
-      profile.region
+      profile.region,
+      jsonOutput
     );
   },
 
@@ -1012,7 +1014,8 @@ export const login = {
     role: Role,
     durationHours: number,
     awsNoVerifySsl: boolean,
-    region: string
+    region: string,
+    jsonOutput = false
   ): Promise<void> {
     console.log(`Assuming role ${role.roleArn} in region ${region}...`);
     let stsOptions: STSClientConfig = {};
@@ -1056,11 +1059,27 @@ export const login = {
       return;
     }
 
-    await awsConfig.setProfileCredentialsAsync(profileName, {
-      aws_access_key_id: res.Credentials.AccessKeyId ?? "",
-      aws_secret_access_key: res.Credentials.SecretAccessKey ?? "",
-      aws_session_token: res.Credentials.SessionToken ?? "",
-      aws_expiration: res.Credentials.Expiration?.toISOString() ?? "",
-    });
+    if (jsonOutput) {
+      process.stdout.write(
+        JSON.stringify(
+          {
+            Version: 1,
+            AccessKeyId: res.Credentials.AccessKeyId ?? "",
+            SecretAccessKey: res.Credentials.SecretAccessKey ?? "",
+            SessionToken: res.Credentials.SessionToken ?? "",
+            Expiration: res.Credentials.Expiration?.toISOString() ?? "",
+          },
+          null,
+          2
+        ) + "\n"
+      );
+    } else {
+      await awsConfig.setProfileCredentialsAsync(profileName, {
+        aws_access_key_id: res.Credentials.AccessKeyId ?? "",
+        aws_secret_access_key: res.Credentials.SecretAccessKey ?? "",
+        aws_session_token: res.Credentials.SessionToken ?? "",
+        aws_expiration: res.Credentials.Expiration?.toISOString() ?? "",
+      });
+    }
   },
 };

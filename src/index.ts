@@ -53,6 +53,10 @@ program
     "--disable-gpu",
     "Tell Puppeteer to pass the --disable-gpu flag to Chromium"
   )
+  .option(
+    "--json",
+    "Print credentials as JSON to stdout instead of saving to ~/.aws/credentials (useful for aws-vault)"
+  )
   .parse(process.argv);
 
 const options = program.opts();
@@ -70,6 +74,12 @@ const enableChromeSeamlessSso = !!options.enableChromeSeamlessSso;
 const forceRefresh = !!options.forceRefresh;
 const noDisableExtensions = !options.disableExtensions;
 const disableGpu = !!options.disableGpu;
+const jsonOutput = !!options.json;
+
+// When outputting JSON, redirect console.log to stderr so stdout stays clean for the JSON payload.
+if (jsonOutput) {
+  console.log = console.error;
+}
 
 Promise.resolve()
   .then(() => {
@@ -97,7 +107,8 @@ Promise.resolve()
       awsNoVerifySsl,
       enableChromeSeamlessSso,
       noDisableExtensions,
-      disableGpu
+      disableGpu,
+      jsonOutput
     );
   })
   .catch((err: Error) => {
